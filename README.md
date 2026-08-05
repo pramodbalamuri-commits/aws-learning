@@ -19,6 +19,7 @@ anyone prepping for AWS certs, a Cloud/Data-Engineer role, or an architecture in
 | [public-vs-private-subnets.md](docs/public-vs-private-subnets.md) | Focused note: why EC2/RDS go in private subnets vs public. |
 | [orders-api.md](docs/orders-api.md) | A serverless Orders API (API Gateway + Lambda + DynamoDB): endpoints, auth, deploy/test, common errors. |
 | [dea-c01-15-day-plan.md](docs/dea-c01-15-day-plan.md) | **📅 15-day study plan for the AWS Data Engineer – Associate (DEA-C01) cert** — hour-by-hour daily timetable, detailed concepts per technology, a project you build day-by-day, and the key service comparisons. (PDF in [`pdfs/`](pdfs/DEA-C01_15_Day_Plan.pdf).) |
+| [dea-c01-cheat-sheet.md](docs/dea-c01-cheat-sheet.md) | **🃏 One-page printable cheat sheet** — every service comparison, the common "right answer" reflexes, the daily project checklist, and the 15-day map on a single page. (PDF in [`pdfs/`](pdfs/DEA-C01_CheatSheet.pdf).) |
 
 **Build guides**
 - [BLUEPRINT.md](docs/BLUEPRINT.md) — a full VPC-based reference architecture (subnets, security groups, IAM) with an A→Z build order.
