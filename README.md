@@ -70,3 +70,8 @@ Each file: explanation → example → exercises → solutions. See `python/READ
 - `docs/aws-glue-crawler-redshift-guide.md` — clear concept guide with real examples & architecture.
 - `docs/aws-data-engineer-glue-redshift-interview-guide.md` — interview guide (Q&A, scenarios, design patterns, tuning, troubleshooting).
 - PDF versions in `pdfs/`.
+
+## Data Lake Engineering — Real-World Scenarios
+`docs/aws-data-lake-realtime-scenarios.md` (PDF in `pdfs/`) — 6 scenarios
+(batch, streaming, CDC, IoT, Lake Formation governance, log analytics) with
+architecture diagrams, services, data flow, design decisions, and challenges+fixes.
