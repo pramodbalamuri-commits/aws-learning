@@ -61,3 +61,12 @@ Diagram images are in [`diagrams/`](diagrams/).
 
 *Educational material — no warranties. Verify anything against the current
 [AWS documentation](https://docs.aws.amazon.com/) before using in production.*
+
+## Python Learning (`python/`)
+Runnable, hands-on Python practice (functions, built-ins, data structures, OOP).
+Each file: explanation → example → exercises → solutions. See `python/README.md`.
+
+## Data Engineer — Glue, Crawler & Redshift
+- `docs/aws-glue-crawler-redshift-guide.md` — clear concept guide with real examples & architecture.
+- `docs/aws-data-engineer-glue-redshift-interview-guide.md` — interview guide (Q&A, scenarios, design patterns, tuning, troubleshooting).
+- PDF versions in `pdfs/`.
