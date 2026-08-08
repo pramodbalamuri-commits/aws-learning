@@ -81,3 +81,9 @@ architecture diagrams, services, data flow, design decisions, and challenges+fix
 beginner→advanced: 3-layer architecture on AWS, warehouses, S3 stages/Snowpipe,
 Streams+Tasks/Dynamic Tables, Time Travel/cloning, a full end-to-end scenario,
 graded real-time scenarios, Snowflake vs Redshift, and interview Q&A.
+
+## dbt on Snowflake
+`docs/dbt-on-snowflake-guide.md` (PDF in `pdfs/`) — the transformation (T) layer:
+project structure, models/ref/source, materializations, incremental (MERGE),
+snapshots (SCD2), tests, Jinja/macros, docs/lineage, deployment, a RetailCo
+scenario, and interview Q&A.
