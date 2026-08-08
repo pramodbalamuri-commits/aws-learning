@@ -75,3 +75,9 @@ Each file: explanation → example → exercises → solutions. See `python/READ
 `docs/aws-data-lake-realtime-scenarios.md` (PDF in `pdfs/`) — 6 scenarios
 (batch, streaming, CDC, IoT, Lake Formation governance, log analytics) with
 architecture diagrams, services, data flow, design decisions, and challenges+fixes.
+
+## Snowflake Data Engineering
+`docs/snowflake-data-engineering-guide.md` (PDF in `pdfs/`) — complete guide,
+beginner→advanced: 3-layer architecture on AWS, warehouses, S3 stages/Snowpipe,
+Streams+Tasks/Dynamic Tables, Time Travel/cloning, a full end-to-end scenario,
+graded real-time scenarios, Snowflake vs Redshift, and interview Q&A.
