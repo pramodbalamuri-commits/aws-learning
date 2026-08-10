@@ -99,3 +99,8 @@ platform (sources → ingestion → lake → Spark → catalog → warehouse →
 governance/monitoring/IaC), a real-time ShopFast scenario, and a deep dive into what happens
 when a Spark job is submitted (driver, cluster manager, executors, DAG, stages, tasks, shuffle,
 Scala/JVM/Py4J) with diagrams.
+
+## Data Engineering Architecture (neat, visual)
+`pdfs/DataEngineering_Architecture_Neat.pdf` — a clean, color-coded layered diagram of the
+full platform (Sources → Ingestion → Data Lake → Spark → Catalog → Warehouse → Consumers)
+plus cross-cutting concerns, with a plain-language explanation of every component.
