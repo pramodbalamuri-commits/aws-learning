@@ -92,3 +92,10 @@ scenario, and interview Q&A.
 `docs/pyspark-guide-scenarios-interview.md` (PDF in `pdfs/`) — PySpark explained simply:
 architecture, DataFrames, joins/windows, Spark SQL, UDFs, read/write/partitioning,
 performance, why/where/when-NOT to use it, common errors & fixes, real scenarios, and Q&A.
+
+## Data Engineering End-to-End Architecture (with Spark job internals)
+`docs/data-engineering-end-to-end-architecture-spark.md` (PDF in `pdfs/`) — the complete
+platform (sources → ingestion → lake → Spark → catalog → warehouse → BI/ML → orchestration/
+governance/monitoring/IaC), a real-time ShopFast scenario, and a deep dive into what happens
+when a Spark job is submitted (driver, cluster manager, executors, DAG, stages, tasks, shuffle,
+Scala/JVM/Py4J) with diagrams.
