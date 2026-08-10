@@ -87,3 +87,8 @@ graded real-time scenarios, Snowflake vs Redshift, and interview Q&A.
 project structure, models/ref/source, materializations, incremental (MERGE),
 snapshots (SCD2), tests, Jinja/macros, docs/lineage, deployment, a RetailCo
 scenario, and interview Q&A.
+
+## PySpark — Guide, Scenarios & Interview Prep
+`docs/pyspark-guide-scenarios-interview.md` (PDF in `pdfs/`) — PySpark explained simply:
+architecture, DataFrames, joins/windows, Spark SQL, UDFs, read/write/partitioning,
+performance, why/where/when-NOT to use it, common errors & fixes, real scenarios, and Q&A.
