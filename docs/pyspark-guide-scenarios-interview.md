@@ -93,6 +93,100 @@ Most production issues trace back to **skew, shuffles, memory, small files, or U
 
 ---
 
+## 1C. End-to-end: how a Spark job actually runs (high-volume walkthrough)
+
+**Scenario:** RetailCo has **2 TB of order events/day** in S3 (Parquet) plus a tiny **regions**
+lookup. Goal: **revenue per region**. This is `filter → join → groupBy → write`, and the
+`groupBy` forces a **shuffle** — the interesting part.
+
+### The code
+```python
+from pyspark.sql.functions import col, sum as _sum, broadcast
+orders  = spark.read.parquet("s3://retailco/curated/orders/dt=2026-08-10/")   # 2 TB
+regions = spark.read.parquet("s3://retailco/dim/regions/")                     # few MB
+result = (orders
+    .filter(col("status") == "completed")     # narrow (no shuffle)
+    .join(broadcast(regions), "region_id")    # broadcast small table -> avoids big shuffle
+    .groupBy("region_name")                   # WIDE -> shuffle
+    .agg(_sum("amount").alias("revenue")))
+result.write.mode("overwrite").parquet("s3://retailco/marts/revenue_by_region/")  # ACTION
+```
+
+### How it's submitted
+```bash
+spark-submit --master yarn --deploy-mode cluster \
+  --num-executors 10 --executor-cores 4 --executor-memory 16g revenue_by_region.py
+```
+(Glue/Databricks run this for you — you just pick worker size/count.)
+
+### The players
+| Component | Role |
+|---|---|
+| **Driver** | Runs your code + SparkSession, builds the **DAG**, schedules work. The brain. |
+| **Cluster Manager** (YARN/K8s/Standalone) | Allocates resources; launches executors on workers. |
+| **Worker node** | A machine hosting executors. |
+| **Executor** | A JVM on a worker that runs tasks and holds cache/shuffle data. 10×4 cores = **40 parallel tasks**. |
+| **Partition** | ~128 MB chunk = unit of parallelism. 2 TB ÷ 128 MB ≈ **16,000 partitions**. |
+| **Task** | Processes **one partition** on one core. |
+| **Job → Stage → Task** | An **action** = a Job; split into **Stages** at shuffle boundaries; each Stage = many Tasks. |
+
+### The flow
+```
+ developer          DRIVER (brain)              CLUSTER MANAGER        WORKERS / EXECUTORS
+    │ spark-submit     │                             │                        │
+    ├─────────────────►│ 1 start driver, Session     │                        │
+    │                  ├──2 "need 10 executors"─────►│                        │
+    │                  │                             ├──3 launch executors───►│ (JVMs start)
+    │                  │◄──────── executors register with driver ─────────────┤
+    │   4 plan: logical → Catalyst → physical → DAG                           │
+    │   5 write() ACTION → submit JOB                                          │
+    │   6 DAG Scheduler splits DAG into STAGES at the shuffle                  │
+    │   7 Task Scheduler sends TASKS (1 per partition)                         │
+    │                  ├──── Stage 1 (scan+filter+broadcast) ────────────────►│ read 128MB each
+    │                  │◄──── shuffle files written to local disk ─────────────┤
+    │                  ├──── Stage 2 (read shuffle, sum) ─────────────────────►│
+    │                  │◄──── results / status ─────────────────────────────────┤
+    │   8 write results to S3
+```
+
+**Step by step:**
+1. `spark-submit` asks the cluster manager to start the **driver**.
+2. Driver creates the **SparkSession** (SparkContext inside).
+3. Driver requests executors; the cluster manager **launches 10 executors** on workers; they
+   **register back** with the driver.
+4. As it reads your transformations (all **lazy**), the driver builds a **logical plan** →
+   **Catalyst** optimizes (pushes the filter into the Parquet scan, prunes columns, picks a
+   **BroadcastHashJoin**) → **physical plan** → **DAG**.
+5. `write()` is an **action** → the driver submits a **Job**.
+6. The **DAG Scheduler** splits it at the shuffle (`groupBy`) into **Stage 1** (scan → filter →
+   broadcast-join, ~16,000 tasks) and **Stage 2** (read shuffle → sum, ~200 shuffle partitions).
+7. The **Task Scheduler** ships **one task per partition** to executors. With 40 cores, ~40 run
+   at once; 16,000 tasks flow through in ~400 waves.
+8. **Stage 1 (narrow):** each task reads its 128 MB partition, filters, tags region from the
+   broadcast copy, and **writes shuffle files** to local disk (hashed by region).
+9. **Shuffle:** data is **exchanged over the network** — each Stage-2 task pulls its region's
+   pieces from every executor. (This is the `Exchange` in `explain()`.)
+10. **Stage 2 (wide):** each task sums `amount` per region.
+11. Executors **write the small result** to S3. (If you'd used `collect()`, results return to
+    the **driver** — fine here since it's tiny, dangerous for big outputs.)
+
+### Where Scala / the JVM fit
+Spark's engine is **Scala on the JVM**; driver and executors are JVM processes. **PySpark is a
+thin Python layer** that talks to the JVM via **Py4J** — so **DataFrame/SQL ops run in the JVM
+at Scala speed** (Python only builds the plan). The exception is **Python UDFs**: rows are
+serialized from the JVM to a **Python worker** per executor and back, which is why UDFs are slow.
+
+### The numbers
+2 TB ÷ 128 MB ≈ **16,000 partitions/tasks**; 10 executors × 4 cores = **40 parallel tasks** →
+~400 waves; join is **broadcast** (no big shuffle); shuffle happens at `groupBy`; output is tiny.
+
+### What could go wrong here
+- **Skew:** one big region → one Stage-2 task lags → AQE skew join / salting.
+- **Forgot `broadcast()`:** the join would shuffle the full **2 TB** — minutes become hours.
+- **Executor OOM / small files:** raise memory / add partitions; `coalesce` before writing.
+
+---
+
 ## 2. SparkSession — your entry point
 
 Every PySpark program starts by creating (or getting) a `SparkSession`:
