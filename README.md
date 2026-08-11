@@ -104,3 +104,8 @@ Scala/JVM/Py4J) with diagrams.
 `pdfs/DataEngineering_Architecture_Neat.pdf` — a clean, color-coded layered diagram of the
 full platform (Sources → Ingestion → Data Lake → Spark → Catalog → Warehouse → Consumers)
 plus cross-cutting concerns, with a plain-language explanation of every component.
+
+## Spark Job Execution Flow (neat, visual)
+`pdfs/Spark_Job_Execution_Flow.pdf` — a clean step-by-step of what happens when a Spark job
+is submitted (driver, cluster manager, executors, DAG, stages, shuffle, JVM/Py4J) using a 2 TB
+revenue-by-region scenario. Also a live web version.
