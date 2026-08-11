@@ -128,3 +128,8 @@ tests, with a PySpark/AWS scale-up section. See `pdfs/interview-prep/DE_TakeHome
 ### 45-minute mock interview (with answers)
 `interview-prep/DE_Mock_Interview_45min_WithAnswers` — a timed, mixed mock (warm-up → concepts →
 SQL/coding → system design → your questions) with model answers and a scoring rubric.
+
+## Databricks hands-on practice (with sample data + Parquet notebook)
+`projects/databricks-practice/` — sample CSV data + a Databricks notebook that generates Parquet
+and walks the full flow (explore → clean → star schema → Delta → MERGE → windows → time travel/
+OPTIMIZE). Guide: `pdfs/Databricks_DE_Practice_Guide.pdf`.
