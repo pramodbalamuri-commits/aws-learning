@@ -115,3 +115,7 @@ revenue-by-region scenario. Also a live web version.
 1. Security-focused cloud DE (ETL/ELT, ingestion, IaC, secure coding & data security, AWS, Python/SQL, data lakes).
 2. Databricks/Delta Lake/AWS + dimensional & normalized data modeling + CI/CD standards.
 3. Oracle warehouse + hybrid lakehouse (Apache Iceberg, OCI Object Storage, Parquet, external tables, shell/Linux, MDM).
+
+### Coding round + mock drill
+`interview-prep/DE_CodingRound_SQL_PySpark` — SQL + PySpark problems with solutions for the live round.
+`interview-prep/DE_MockDrill_RapidFire` — 56 rapid-fire Q&A across all three JDs to practice aloud.
