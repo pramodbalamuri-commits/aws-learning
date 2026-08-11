@@ -139,3 +139,7 @@ OPTIMIZE). Guide: `pdfs/Databricks_DE_Practice_Guide.pdf`.
 full guide: dev (clusters, Delta, medallion, MERGE, windows, Jobs, Auto Loader, DLT, tuning,
 streaming, Unity Catalog, CI/CD) and admin (users/groups/UC governance, cluster policies/pools,
 SQL warehouses, secrets, security, cost, monitoring). Pairs with the sample Parquet notebook.
+
+### Databricks admin hands-on lab
+`pdfs/Databricks_Admin_Lab.pdf` (+ md in projects/databricks-practice/) — four practical admin
+tasks with UI + CLI/JSON/SQL: cluster policy, secret scope, Unity Catalog grants, and a scheduled job.
