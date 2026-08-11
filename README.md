@@ -119,3 +119,8 @@ revenue-by-region scenario. Also a live web version.
 ### Coding round + mock drill
 `interview-prep/DE_CodingRound_SQL_PySpark` — SQL + PySpark problems with solutions for the live round.
 `interview-prep/DE_MockDrill_RapidFire` — 56 rapid-fire Q&A across all three JDs to practice aloud.
+
+### Take-home mini-project (runnable)
+`projects/de-take-home/` — a realistic ELT take-home + runnable reference solution (Python +
+SQLite): ingest → clean (dedup/nulls/bad refs) → star schema → data-quality checks → analytics →
+tests, with a PySpark/AWS scale-up section. See `pdfs/interview-prep/DE_TakeHome_Project_Guide.pdf`.
