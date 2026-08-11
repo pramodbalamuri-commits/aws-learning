@@ -109,3 +109,9 @@ plus cross-cutting concerns, with a plain-language explanation of every componen
 `pdfs/Spark_Job_Execution_Flow.pdf` — a clean step-by-step of what happens when a Spark job
 is submitted (driver, cluster manager, executors, DAG, stages, shuffle, JVM/Py4J) using a 2 TB
 revenue-by-region scenario. Also a live web version.
+
+## Data Engineer Interview Prep (JD-specific, Q&A)
+`docs/interview-prep/` + `pdfs/interview-prep/` — three targeted prep guides:
+1. Security-focused cloud DE (ETL/ELT, ingestion, IaC, secure coding & data security, AWS, Python/SQL, data lakes).
+2. Databricks/Delta Lake/AWS + dimensional & normalized data modeling + CI/CD standards.
+3. Oracle warehouse + hybrid lakehouse (Apache Iceberg, OCI Object Storage, Parquet, external tables, shell/Linux, MDM).
