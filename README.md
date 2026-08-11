@@ -133,3 +133,9 @@ SQL/coding → system design → your questions) with model answers and a scorin
 `projects/databricks-practice/` — sample CSV data + a Databricks notebook that generates Parquet
 and walks the full flow (explore → clean → star schema → Delta → MERGE → windows → time travel/
 OPTIMIZE). Guide: `pdfs/Databricks_DE_Practice_Guide.pdf`.
+
+### Databricks: beginner-to-expert (development + administration)
+`pdfs/Databricks_Beginner_to_Expert_Dev_and_Admin.pdf` (+ md in projects/databricks-practice/) —
+full guide: dev (clusters, Delta, medallion, MERGE, windows, Jobs, Auto Loader, DLT, tuning,
+streaming, Unity Catalog, CI/CD) and admin (users/groups/UC governance, cluster policies/pools,
+SQL warehouses, secrets, security, cost, monitoring). Pairs with the sample Parquet notebook.
