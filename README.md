@@ -143,3 +143,7 @@ SQL warehouses, secrets, security, cost, monitoring). Pairs with the sample Parq
 ### Databricks admin hands-on lab
 `pdfs/Databricks_Admin_Lab.pdf` (+ md in projects/databricks-practice/) — four practical admin
 tasks with UI + CLI/JSON/SQL: cluster policy, secret scope, Unity Catalog grants, and a scheduled job.
+
+### Databricks Certified Data Engineer Associate — prep sheet
+`pdfs/Databricks_Cert_DE_Associate_PrepSheet.pdf` — exam domains, 15 sample Q&A, and common
+gotchas (managed vs external, COPY INTO vs MERGE, OPTIMIZE vs VACUUM, Auto Loader, DLT, Unity Catalog).
