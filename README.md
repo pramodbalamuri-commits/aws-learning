@@ -124,3 +124,7 @@ revenue-by-region scenario. Also a live web version.
 `projects/de-take-home/` — a realistic ELT take-home + runnable reference solution (Python +
 SQLite): ingest → clean (dedup/nulls/bad refs) → star schema → data-quality checks → analytics →
 tests, with a PySpark/AWS scale-up section. See `pdfs/interview-prep/DE_TakeHome_Project_Guide.pdf`.
+
+### 45-minute mock interview (with answers)
+`interview-prep/DE_Mock_Interview_45min_WithAnswers` — a timed, mixed mock (warm-up → concepts →
+SQL/coding → system design → your questions) with model answers and a scoring rubric.
