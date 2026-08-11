@@ -147,3 +147,7 @@ tasks with UI + CLI/JSON/SQL: cluster policy, secret scope, Unity Catalog grants
 ### Databricks Certified Data Engineer Associate — prep sheet
 `pdfs/Databricks_Cert_DE_Associate_PrepSheet.pdf` — exam domains, 15 sample Q&A, and common
 gotchas (managed vs external, COPY INTO vs MERGE, OPTIMIZE vs VACUUM, Auto Loader, DLT, Unity Catalog).
+
+### Databricks DE Associate — 45-question practice test
+`pdfs/Databricks_Cert_DE_Associate_PracticeTest.pdf` — full-length exam-style practice test with an
+answer key and explanations across all five domains.
