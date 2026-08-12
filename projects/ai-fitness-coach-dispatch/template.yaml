@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AI Fitness Coach Dispatch — serverless AI coach on AWS.
+  Claude (Amazon Bedrock) + Lambda + API Gateway + DynamoDB + EventBridge Scheduler + SNS.
+  One-command deploy:  sam build && sam deploy --guided
+
+Parameters:
+  ModelId:
+    Type: String
+    Description: Bedrock Claude model / inference-profile ID (e.g. us.anthropic.claude-...).
+  NotifyEmail:
+    Type: String
+    Description: Email address subscribed to the dispatch SNS topic.
+
+Globals:
+  Function:
+    Runtime: python3.12
+    MemorySize: 256
+    Timeout: 90
+    Environment:
+      Variables:
+        USERS_TABLE: !Ref UsersTable
+
+Resources:
+
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FitnessCoachUsers
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+
+  DispatchTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: FitnessCoachDispatch
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref NotifyEmail
+
+  # --- On-demand coach: API Gateway -> Lambda -> Bedrock ---
+  CoachFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: FitnessCoach
+      Handler: lambda_coach.handler
+      CodeUri: ./src
+      Environment:
+        Variables:
+          MODEL_ID: !Ref ModelId
+          USERS_TABLE: !Ref UsersTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+        - Statement:
+            - Effect: Allow
+              Action: [bedrock:InvokeModel]
+              Resource: '*'
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /coach
+            Method: POST
+
+  # --- Scheduled dispatch: EventBridge -> Lambda -> SNS ---
+  DispatchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: FitnessCoachDispatch
+      Handler: lambda_dispatch.handler
+      Timeout: 120
+      Environment:
+        Variables:
+          USERS_TABLE: !Ref UsersTable
+          TOPIC_ARN: !Ref DispatchTopic
+          COACH_FUNCTION: !Ref CoachFunction
+      CodeUri: ./src
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref UsersTable
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt DispatchTopic.TopicName
+        - LambdaInvokePolicy:
+            FunctionName: !Ref CoachFunction
+      Events:
+        Daily:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: cron(0 7 * * ? *)   # 07:00 UTC daily
+
+Outputs:
+  ApiEndpoint:
+    Description: POST here with {"userId":"u123"} to get a plan
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/coach'
+  UsersTableName:
+    Value: !Ref UsersTable
+  DispatchTopicArn:
+    Value: !Ref DispatchTopic
